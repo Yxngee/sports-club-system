@@ -32,6 +32,7 @@ class PurchaseOrder(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created_by = db.Column(db.Integer, db.ForeignKey("user.id"))
     status = db.Column(db.String(40), default="Pending")
+
     creator = db.relationship("User")
 
 
@@ -55,8 +56,8 @@ class Player(db.Model):
     name = db.Column(db.String(100), nullable=False)
     position = db.Column(db.String(100))
     team_id = db.Column(db.Integer, db.ForeignKey("team.id"))
-    team = db.relationship("Team")
 
+    team = db.relationship("Team")
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -79,16 +80,15 @@ def seed_data():
             Item(name="Training Cones", category="Equipment", quantity=50, price=2.50, image="cones.svg"),
             Item(name="Goalkeeper Gloves", category="Equipment", quantity=10, price=35.00, image="gloves.svg"),
             Item(name="Water Bottles", category="Accessories", quantity=40, price=5.00, image="bottles.svg"),
-            Item(name="Basketball", category="Equipment", quantity=15, price=18.00, image="football.svg"),
-            Item(name="First Aid Kit", category="Medical", quantity=8, price=30.00, image="sports_logo.svg"),
-            Item(name="Whistle", category="Coaching", quantity=25, price=4.00, image="sports_logo.svg"),
-            Item(name="Training Bibs", category="Clothing", quantity=35, price=7.00, image="jersey.svg"),
-            Item(name="Agility Ladder", category="Training", quantity=12, price=22.00, image="cones.svg"),
+            Item(name="Basketball", category="Equipment", quantity=15, price=18.00, image="basketball.svg"),
+            Item(name="First Aid Kit", category="Medical", quantity=8, price=30.00, image="firstaid.svg"),
+            Item(name="Whistle", category="Coaching", quantity=25, price=4.00, image="whistle.svg"),
         ])
 
     if Team.query.count() == 0:
         team1 = Team(name="Senior Team")
         team2 = Team(name="Under 21 Team")
+
         db.session.add_all([team1, team2])
         db.session.flush()
 
@@ -101,6 +101,29 @@ def seed_data():
 
     db.session.commit()
 
+    if PurchaseOrder.query.count() == 0:
+        coach = User.query.filter_by(username="coach1").first()
+        football = Item.query.filter_by(name="Football").first()
+        jersey = Item.query.filter_by(name="Jersey").first()
+
+        sample_order = PurchaseOrder(created_by=coach.id, status="Pending")
+        db.session.add(sample_order)
+        db.session.flush()
+
+        db.session.add_all([
+            PurchaseOrderItem(
+                purchase_order_id=sample_order.id,
+                item_id=football.id,
+                quantity=5
+            ),
+            PurchaseOrderItem(
+                purchase_order_id=sample_order.id,
+                item_id=jersey.id,
+                quantity=10
+            )
+        ])
+
+        db.session.commit()
 
 @app.route("/")
 def index():

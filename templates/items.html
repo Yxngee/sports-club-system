@@ -3,24 +3,27 @@
 
 <h2>Inventory Items</h2>
 
-<table class="table table-bordered table-striped mt-3">
-    <tr class="table-dark">
-        <th>ID</th>
-        <th>Name</th>
-        <th>Category</th>
-        <th>Quantity</th>
-        <th>Price</th>
-    </tr>
+{% extends "base.html" %}
+{% block content %}
 
+<h2>Inventory Items</h2>
+
+<div class="row">
     {% for item in items %}
-    <tr>
-        <td>{{ item.id }}</td>
-        <td>{{ item.name }}</td>
-        <td>{{ item.category }}</td>
-        <td>{{ item.quantity }}</td>
-        <td>€{{ "%.2f"|format(item.price) }}</td>
-    </tr>
+    <div class="col-md-3 mb-4">
+        <div class="card shadow h-100">
+            <img src="{{ url_for('static', filename='images/' + item.image) }}" class="card-img-top p-4"
+                style="height:160px; object-fit:contain;">
+
+            <div class="card-body">
+                <h5>{{ item.name }}</h5>
+                <p><strong>Category:</strong> {{ item.category }}</p>
+                <p><strong>Stock:</strong> {{ item.quantity }}</p>
+                <p><strong>Price:</strong> €{{ "%.2f"|format(item.price) }}</p>
+            </div>
+        </div>
+    </div>
     {% endfor %}
-</table>
+</div>
 
 {% endblock %}

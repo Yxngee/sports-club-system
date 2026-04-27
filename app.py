@@ -25,6 +25,7 @@ class Item(db.Model):
     category = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Integer, default=0)
     price = db.Column(db.Float, default=0.0)
+    image = db.Column(db.String(100), default="sports_logo.svg")
 
 
 class PurchaseOrder(db.Model):
@@ -73,11 +74,16 @@ def seed_data():
 
     if Item.query.count() == 0:
         db.session.add_all([
-            Item(name="Football", category="Equipment", quantity=20, price=15.00),
-            Item(name="Jersey", category="Clothing", quantity=30, price=25.00),
-            Item(name="Training Cones", category="Equipment", quantity=50, price=2.50),
-            Item(name="Goalkeeper Gloves", category="Equipment", quantity=10, price=35.00),
-            Item(name="Water Bottles", category="Accessories", quantity=40, price=5.00),
+            Item(name="Football", category="Equipment", quantity=20, price=15.00, image="football.svg"),
+            Item(name="Jersey", category="Clothing", quantity=30, price=25.00, image="jersey.svg"),
+            Item(name="Training Cones", category="Equipment", quantity=50, price=2.50, image="cones.svg"),
+            Item(name="Goalkeeper Gloves", category="Equipment", quantity=10, price=35.00, image="gloves.svg"),
+            Item(name="Water Bottles", category="Accessories", quantity=40, price=5.00, image="bottles.svg"),
+            Item(name="Basketball", category="Equipment", quantity=15, price=18.00, image="football.svg"),
+            Item(name="First Aid Kit", category="Medical", quantity=8, price=30.00, image="sports_logo.svg"),
+            Item(name="Whistle", category="Coaching", quantity=25, price=4.00, image="sports_logo.svg"),
+            Item(name="Training Bibs", category="Clothing", quantity=35, price=7.00, image="jersey.svg"),
+            Item(name="Agility Ladder", category="Training", quantity=12, price=22.00, image="cones.svg"),
         ])
 
     if Team.query.count() == 0:
@@ -116,6 +122,28 @@ def login():
         flash("Invalid username or password")
 
     return render_template("login.html")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        role = request.form["role"]
+
+        existing_user = User.query.filter_by(username=username).first()
+
+        if existing_user:
+            flash("Username already exists")
+            return redirect(url_for("register"))
+
+        new_user = User(username=username, password=password, role=role)
+        db.session.add(new_user)
+        db.session.commit()
+
+        flash("Registration successful. Please log in.")
+        return redirect(url_for("login"))
+
+    return render_template("register.html")
 
 
 @app.route("/logout")

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Purchase Orders</h2>
+
+<a class="btn btn-primary mb-3" href="{{ url_for('create_order') }}">Create Purchase Order</a>
+
+<table class="table table-bordered table-striped">
+    <tr class="table-dark">
+        <th>Order ID</th>
+        <th>Created By</th>
+        <th>Status</th>
+        <th>Items</th>
+        <th>Actions</th>
+    </tr>
+
+    {% for order in orders %}
+    <tr>
+        <td>{{ order.id }}</td>
+        <td>{{ order.creator.username }}</td>
+        <td>
+            {% if order.status == "Pending" %}
+            <span class="badge bg-warning text-dark">{{ order.status }}</span>
+            {% elif order.status == "Approved" %}
+            <span class="badge bg-success">{{ order.status }}</span>
+            {% else %}
+            <span class="badge bg-danger">{{ order.status }}</span>
+            {% endif %}
+        </td>
+        <td>
+            {% for order_item in order.order_items %}
+            {{ order_item.item.name }} x {{ order_item.quantity }}<br>
+            {% endfor %}
+        </td>
+        <td>
+            {% if order.status == "Pending" %}
+            <a class="btn btn-success btn-sm" href="{{ url_for('approve_order', order_id=order.id) }}">Approve</a>
+            <a class="btn btn-danger btn-sm" href="{{ url_for('reject_order', order_id=order.id) }}">Reject</a>
+            {% else %}
+            No actions
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

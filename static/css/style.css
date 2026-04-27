@@ -1,0 +1,24 @@
+body {
+    background-color: #f4f6f9;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.card {
+    border-radius: 12px;
+}
+
+.dashboard-card {
+    min-height: 180px;
+}
+
+h2 {
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.table {
+    background-color: white;
+}

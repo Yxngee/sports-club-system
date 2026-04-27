@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Create Purchase Order</h2>
+
+<form method="POST" class="card p-4 shadow mt-3">
+    <label>Select Item</label>
+    <select class="form-control mb-3" name="item_id" required>
+        {% for item in items %}
+        <option value="{{ item.id }}">
+            {{ item.name }} - Current Stock: {{ item.quantity }}
+        </option>
+        {% endfor %}
+    </select>
+
+    <label>Quantity</label>
+    <input class="form-control mb-3" type="number" name="quantity" min="1" required>
+
+    <button class="btn btn-primary">Submit Purchase Order</button>
+</form>
+
+{% endblock %}

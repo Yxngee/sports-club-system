@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white text-center">
+                <h4>Sports Club Login</h4>
+            </div>
+
+            <div class="card-body">
+                <form method="POST">
+                    <label>Username</label>
+                    <input class="form-control mb-3" name="username" required>
+
+                    <label>Password</label>
+                    <input class="form-control mb-3" name="password" type="password" required>
+
+                    <button class="btn btn-primary w-100">Login</button>
+                </form>
+
+                <hr>
+
+                <h6>Fixture Users</h6>
+                <ul>
+                    <li>admin / password</li>
+                    <li>coach1 / password</li>
+                    <li>manager1 / password</li>
+                    <li>player1 / password</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

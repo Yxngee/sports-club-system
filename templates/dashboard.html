@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Dashboard</h2>
+
+<p>
+    Welcome, <strong>{{ current_user.username }}</strong>.
+    Your role is <strong>{{ current_user.role }}</strong>.
+</p>
+
+<div class="row mt-4">
+
+    <div class="col-md-4">
+        <div class="card shadow p-3 dashboard-card">
+            <h4>Inventory</h4>
+            <p>{{ item_count }} items recorded</p>
+            <a class="btn btn-success" href="{{ url_for('items') }}">View Inventory</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow p-3 dashboard-card">
+            <h4>Purchase Orders</h4>
+            <p>{{ order_count }} purchase orders created</p>
+            <a class="btn btn-primary" href="{{ url_for('orders') }}">View Orders</a>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow p-3 dashboard-card">
+            <h4>Players</h4>
+            <p>{{ player_count }} registered players</p>
+            <a class="btn btn-secondary" href="{{ url_for('players') }}">View Players</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
